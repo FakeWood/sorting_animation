@@ -68,9 +68,35 @@ def quickSort(array, start, end):
     yield from quickSort(array, start, j-1)
     yield from quickSort(array, j+1, end)
 
-def heapSort(arr):
-    pass
- 
+def heapSort(arr, n):
+    # put root into the right place to adjust heap to a max heap
+    def adjust(arr, root, n):
+        root_value = arr[root]
+        # child = left child of root
+        child = root*2+1
+        while child < n:
+            # let child be the bigger child
+            if child+1 < n and arr[child+1] > arr[child]:
+                child += 1
+            # go deeper child if child were bigger than root
+            if arr[child] > root_value:
+                arr[(child-1)//2] = arr[child]
+                child = child*2+1
+                yield arr
+            else:
+                arr[(child-1)//2] = root_value
+                yield arr
+                break
+
+    # heap sort
+    # build max heap
+    for i in range((n-1-1)//2,-1,-1):
+        yield from adjust(arr, i, n)
+    # sort
+    for i in range(n-1,0,-1):
+        arr[0], arr[i] = arr[i], arr[0]
+        yield from adjust(arr,0,i)
+
 def update_fig(array, rects, iteration, title, id):
     x = id // 3
     y = id % 3
@@ -118,5 +144,7 @@ id = 2
 anim[id] = FuncAnimation(fig, func=update_fig, fargs=(bar_rects, iteration, "merge sort", id), frames=mergeSort(array[id],0,data_num-1), interval=1, repeat=False)
 id = 3
 anim[id] = FuncAnimation(fig, func=update_fig, fargs=(bar_rects, iteration, "quick sort", id), frames=quickSort(array[id],0,data_num-1), interval=1, repeat=False)
+id = 4
+anim[id] = FuncAnimation(fig, func=update_fig, fargs=(bar_rects, iteration, "heap sort", id), frames=heapSort(array[id],data_num), interval=1, repeat=False)
 
 plt.show()
