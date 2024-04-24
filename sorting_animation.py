@@ -71,7 +71,6 @@ def quickSort(array, start, end):
 def heapSort(arr, n):
     # put root into the right place to adjust heap to a max heap
     def adjust(arr, root, n):
-        root_value = arr[root]
         # child = left child of root
         child = root*2+1
         while child < n:
@@ -79,22 +78,22 @@ def heapSort(arr, n):
             if child+1 < n and arr[child+1] > arr[child]:
                 child += 1
             # go deeper child if child were bigger than root
-            if arr[child] > root_value:
-                arr[(child-1)//2] = arr[child]
+            if arr[child] > arr[(child-1)//2]:
+                arr[(child-1)//2], arr[child] = arr[child], arr[(child-1)//2]
                 child = child*2+1
                 yield arr
             else:
-                arr[(child-1)//2] = root_value
-                yield arr
                 break
 
     # heap sort
     # build max heap
     for i in range((n-1-1)//2,-1,-1):
         yield from adjust(arr, i, n)
+    print("FFFFFFFFFFFFFF")
     # sort
-    for i in range(n-1,0,-1):
+    for i in range(n-1,-1,-1):
         arr[0], arr[i] = arr[i], arr[0]
+        yield arr
         yield from adjust(arr,0,i)
 
 def update_fig(array, rects, iteration, title, id):
