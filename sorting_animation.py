@@ -95,6 +95,20 @@ def heapSort(arr, n):
         yield arr
         yield from adjust(arr,0,i)
 
+def countingSort(arr, n):
+    arr_sorted = [0] * n
+    arr_pre_sum = [0] * n
+    for i in range(n):
+        arr_pre_sum[arr[i]-1] += 1
+        yield arr
+    for i in range(1,n):
+        arr_pre_sum[i] += arr_pre_sum[i-1]
+        yield arr
+    for i in range(n-1,-1,-1):
+        arr_sorted[arr_pre_sum[arr[i]-1]-1] = arr[i]
+        arr_pre_sum[arr[i]-1] -= 1
+        yield arr_sorted
+
 def update_fig(array, rects, iteration, title, id):
     x = id // 3
     y = id % 3
@@ -144,5 +158,7 @@ id = 3
 anim[id] = FuncAnimation(fig, func=update_fig, fargs=(bar_rects, iteration, "quick sort", id), frames=quickSort(array[id],0,data_num-1), interval=1, repeat=False)
 id = 4
 anim[id] = FuncAnimation(fig, func=update_fig, fargs=(bar_rects, iteration, "heap sort", id), frames=heapSort(array[id],data_num), interval=1, repeat=False)
+# id = 5
+# anim[id] = FuncAnimation(fig, func=update_fig, fargs=(bar_rects, iteration, "counting sort", id), frames=countingSort(array[id],data_num), interval=1, repeat=False)
 
 plt.show()
