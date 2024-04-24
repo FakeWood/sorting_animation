@@ -89,7 +89,6 @@ def heapSort(arr, n):
     # build max heap
     for i in range((n-1-1)//2,-1,-1):
         yield from adjust(arr, i, n)
-    print("FFFFFFFFFFFFFF")
     # sort
     for i in range(n-1,-1,-1):
         arr[0], arr[i] = arr[i], arr[0]
