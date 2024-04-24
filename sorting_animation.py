@@ -8,7 +8,7 @@ def bubbleSort(arr):
         for j in range(n-i-1):
             if arr[j] > arr[j+1]:
                 arr[j], arr[j+1] = arr[j+1], arr[j]
-                yield arr
+            yield arr
 
 def insertionSort(arr):
     n = len(arr)
